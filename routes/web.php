@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::middleware('auth')->post('/testservice', 'WishList@createNewWish')->name('testjk');
+
+Route::view('/testa', 'test');
+
+Auth::routes();
+
+Route::get('/', 'HomeController@index')->name('home');
