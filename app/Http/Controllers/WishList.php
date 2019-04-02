@@ -6,10 +6,46 @@ use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use App\product;
 use App\wish;
+use App\User;
 
 class WishList extends Controller
 {
     //
+    function removeFromWishList(Request $r){
+      $r->validate([
+          'id' => 'required|numeric',
+      ]);
+
+      //Check if the user is the owner of the wish and get it.
+      $wish = wish::where(['user_id' => $r->user()->id , 'id' => $r->id])->first();
+      if(!isset($wish->id)){
+        return response()->json(['success'=> false]);
+      }
+
+      //change wish's status for remove from list
+      $wish->status_ = 0;
+      $wish->save();
+
+      return response()->json(['success'=> true]);
+    }
+
+    function getWishList(Request $r){
+
+      //Find products of the wish list
+      $wishList = User::find($r->user()->id)
+      ->wishList()
+      ->select('wishes.id','image','name','description','price','wishes.created_at','wishes.updated_at')
+      ->where('status_' , 1)
+      ->orderby('created_at' , 'desc')
+      ->get();
+
+      //check if exist almost 1 product in wishlist
+      if(!isset($wishList[0])){
+        return response()->json(['success'=> false]);
+      }
+      return response()->json(['success' => true , 'data' => $wishList]);
+    }
+
     function createNewWish(Request $r){
       $r->validate([
           'name' => 'required|unique:products|max:255',

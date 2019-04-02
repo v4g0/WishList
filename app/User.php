@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token','pivot'
     ];
 
     /**
@@ -36,4 +36,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    //Relation with product many to many for get wishlist
+    public function wishList(){
+      return $this->belongsToMany('App\product', 'wishes', 'user_id', 'product_id');
+    }
 }

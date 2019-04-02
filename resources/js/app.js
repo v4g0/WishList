@@ -6,27 +6,41 @@
  */
 
 require('./bootstrap');
-
 window.Vue = require('vue');
-
 /**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ * Create a Hub for vue to manage components
  */
+Vue.prototype.$eventHub = new Vue();
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+//loaders
+Vue.component('pulse-loader', require('vue-spinner/src/PulseLoader.vue'));
+Vue.component('clip-loader', require('vue-spinner/src/ClipLoader.vue'));
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+//Container component
+Vue.component('container-component', require('./components/ContainerComponent.vue').default);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+//Axios responses
+axios.interceptors.response.use(undefined, error => {
+  if (error.message === "Network Error") {
+    swal("¡Oops!", "Network Error", "error")
+  }
+
+  switch (error.response.status) {
+    case 422:
+       swal("¡Oops!", "Datos incorrectos", "error")
+      break;
+    case 405:
+      swal("¡Oops!", "Acceso denegado", "error")
+      return
+
+    default:
+      swal("¡Oops!", "Servicio no disponible", "error")
+      break
+  }
+
+  return Promise.reject(error);
+});
+
 
 const app = new Vue({
     el: '#app'

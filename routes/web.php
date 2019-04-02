@@ -11,10 +11,33 @@
 |
 */
 
-Route::middleware('auth')->post('/testservice', 'WishList@createNewWish')->name('testjk');
+
+Route::middleware('auth')->get('/testservice', 'Budget@updateBudget')->name('test');
 
 Route::view('/testa', 'test');
 
+//ROUTES FOR VIEWS
+
+Route::view('/', 'index');
+
+//ROUTES FOR SERVICES
+Route::group(['middleware' => 'auth'], function () {
+  //Create new product for wishlist
+  Route::post('/createnewproduct', 'WishList@createNewWish');
+  //Get wishList
+  Route::get('/getwishlist', 'WishList@getWishList');
+  //Remove product from wishlist
+  Route::post('/removefwishlist', 'WishList@removeFromWishList');
+  //BuyProducts
+  Route::post('/buyproduct', 'BuyProduct');
+  //Get budget
+  Route::get('/getbudget','Budget@getBudget');
+  //Update budget
+  Route::get('/updatebudget','Budget@updateBudget');
+});
+
+
+
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
