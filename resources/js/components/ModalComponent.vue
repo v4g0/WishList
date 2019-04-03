@@ -85,11 +85,17 @@ export default {
         bodyFormData.append('description', this.description);
         bodyFormData.append('price', this.price);
         bodyFormData.append('image', this.image);
+        swal({
+             closeOnClickOutside: false,
+             buttons: false,
+             icon: "info",
+             text: "Procesando..",
+            });
 
         axios.post("/createnewproduct", bodyFormData,{  headers: { 'content-type': 'multipart/form-data' }})
         .then(r => {
           if(r.data.success) {
-
+            swal("Hecho","¡Deseo Agregado!","success")
             this.$eventHub.$emit('updateWishList')
           }
         })

@@ -12,6 +12,8 @@
          </li>
        </ul>
        <h3 v-if='boughtList != undefined'>Total = ${{this.boughtTotal}}</h3>
+
+       <h4 @click='logout()' style="color:red; float:right; margin-top:100px">Logout <i class="fas fa-sign-out-alt"></i></h4>
      </div>
 
     </div>
@@ -118,6 +120,12 @@
          })
       },
       methods: {
+          logout(){
+            axios.post("/logout",{
+            }).then(response => {
+              location.reload()
+            })
+          },
           searchWishes(e){
             if(this.search != null){
               this.wishlist = undefined

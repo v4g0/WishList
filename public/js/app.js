@@ -1861,6 +1861,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1886,6 +1888,11 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    logout: function logout() {
+      axios.post("/logout", {}).then(function (response) {
+        location.reload();
+      });
+    },
     searchWishes: function searchWishes(e) {
       var _this2 = this;
 
@@ -2204,12 +2211,20 @@ __webpack_require__.r(__webpack_exports__);
       bodyFormData.append('description', this.description);
       bodyFormData.append('price', this.price);
       bodyFormData.append('image', this.image);
+      swal({
+        closeOnClickOutside: false,
+        buttons: false,
+        icon: "info",
+        text: "Procesando.."
+      });
       axios.post("/createnewproduct", bodyFormData, {
         headers: {
           'content-type': 'multipart/form-data'
         }
       }).then(function (r) {
         if (r.data.success) {
+          swal("Hecho", "¡Deseo Agregado!", "success");
+
           _this.$eventHub.$emit('updateWishList');
         }
       });
@@ -2321,6 +2336,8 @@ __webpack_require__.r(__webpack_exports__);
         bodyFormData.append('id', this.wish.id);
         axios.post("/buyproduct", bodyFormData, {}).then(function (response) {
           if (response.data.success) {
+            swal('Hecho', 'EL deseo fue descontado del presupuesto.', 'success');
+
             _this2.$eventHub.$emit('updateWishList');
           } else {
             swal('Este producto supera el presupuesto', 'Favor de ajustar presupuesto para poder continuar.', 'error');
@@ -38629,7 +38646,24 @@ var render = function() {
           _vm._v(" "),
           _vm.boughtList != undefined
             ? _c("h3", [_vm._v("Total = $" + _vm._s(this.boughtTotal))])
-            : _vm._e()
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "h4",
+            {
+              staticStyle: {
+                color: "red",
+                float: "right",
+                "margin-top": "100px"
+              },
+              on: {
+                click: function($event) {
+                  return _vm.logout()
+                }
+              }
+            },
+            [_vm._v("Logout "), _c("i", { staticClass: "fas fa-sign-out-alt" })]
+          )
         ])
       ]),
       _vm._v(" "),
@@ -51981,6 +52015,10 @@ axios.interceptors.response.use(undefined, function (error) {
   }
 
   switch (error.response.status) {
+    case 401:
+      location.reload();
+      break;
+
     case 422:
       swal("¡Oops!", "Datos incorrectos", "error");
       break;
@@ -51988,6 +52026,7 @@ axios.interceptors.response.use(undefined, function (error) {
     case 405:
       swal("¡Oops!", "Acceso denegado", "error");
       return;
+      break;
 
     default:
       swal("¡Oops!", "Servicio no disponible", "error");

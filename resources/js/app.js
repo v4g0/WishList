@@ -31,13 +31,16 @@ axios.interceptors.response.use(undefined, error => {
   }
 
   switch (error.response.status) {
+    case 401:
+        location.reload()
+      break
     case 422:
       swal("¡Oops!", "Datos incorrectos", "error")
-      break;
+      break
     case 405:
       swal("¡Oops!", "Acceso denegado", "error")
       return
-
+      break
     default:
       swal("¡Oops!", "Servicio no disponible", "error")
       break

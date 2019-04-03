@@ -7,6 +7,7 @@ use App\product;
 use App\wish;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Mail;
 
 class BuyProduct extends Controller
 {
@@ -48,6 +49,18 @@ class BuyProduct extends Controller
      } catch (\Exception $e) {
         return response()->json(['success'=> false , 'msg' => 'transaction']);
      }
+
+     $email = $r->user()->email;
+     $data_mail['name'] =  $r->user()->name;
+     $data_mail['subject'] =  'Deseo descontado del presupuesto.';
+     $data_mail['msg'] =  'El deseo: '. $product->name . ' fue descontado del presupuesto.' ;
+     $data_mail['date'] = date('Y-m-d h:i:s');
+
+     Mail::send('email.default', $data_mail, function($message) use($email) {
+        $message->to($email)->subject
+           ('Nuevo deseo añadido.');
+        $message->from('wishlist.demobybrihuega@gmail.com','Wish List By David Brihuega');
+     });
 
      return response()->json(['success'=> true ]);
 

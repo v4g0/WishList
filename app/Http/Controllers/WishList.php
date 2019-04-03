@@ -7,6 +7,7 @@ use Intervention\Image\Facades\Image;
 use App\product;
 use App\wish;
 use App\User;
+use Mail;
 
 class WishList extends Controller
 {
@@ -192,6 +193,18 @@ class WishList extends Controller
 
       $wish->save();
 
+      //Send email for user
+      $email = $r->user()->email;
+      $data_mail['name'] =  $r->user()->name;
+      $data_mail['subject'] =  'Nuevo deseo añadido.';
+      $data_mail['msg'] =  'El deseo: '. $product->name . ' fue añadido satisfactoriamente.' ;
+      $data_mail['date'] = date('Y-m-d h:i:s');
+
+      Mail::send('email.default', $data_mail, function($message) use($email) {
+         $message->to($email)->subject
+            ('Nuevo deseo añadido.');
+         $message->from('wishlist.demobybrihuega@gmail.com','Wish List By David Brihuega');
+      });
       return response()->json(['success' => true]);
 
     }

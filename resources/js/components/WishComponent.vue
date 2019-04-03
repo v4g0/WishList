@@ -90,6 +90,7 @@
               axios.post("/buyproduct",bodyFormData,{
               }).then(response => {
                  if(response.data.success){
+                   swal('Hecho' , 'EL deseo fue descontado del presupuesto.','success')
                    this.$eventHub.$emit('updateWishList')
                  }else{
                    swal('Este producto supera el presupuesto' , 'Favor de ajustar presupuesto para poder continuar.','error')
