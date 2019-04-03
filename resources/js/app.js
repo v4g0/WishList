@@ -18,6 +18,7 @@ Vue.component('clip-loader', require('vue-spinner/src/ClipLoader.vue'));
 
 //Container component
 Vue.component('container-component', require('./components/ContainerComponent.vue').default);
+Vue.component('wish-component', require('./components/WishComponent.vue').default);
 
 //Axios responses
 axios.interceptors.response.use(undefined, error => {

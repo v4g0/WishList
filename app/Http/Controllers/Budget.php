@@ -10,6 +10,7 @@ class Budget extends Controller
     //
     function getBudget(Request $r){
       return response()->json([
+        'success'=> true ,
         'budget' => $r->user()->budget,
         'name' => $r->user()->name
       ]);

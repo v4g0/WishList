@@ -16,11 +16,7 @@ Route::middleware('auth')->get('/testservice', 'Budget@updateBudget')->name('tes
 
 Route::view('/testa', 'test');
 
-//ROUTES FOR VIEWS
 
-Route::view('/', 'index');
-
-//ROUTES FOR SERVICES
 Route::group(['middleware' => 'auth'], function () {
   //Create new product for wishlist
   Route::post('/createnewproduct', 'WishList@createNewWish');
@@ -33,7 +29,10 @@ Route::group(['middleware' => 'auth'], function () {
   //Get budget
   Route::get('/getbudget','Budget@getBudget');
   //Update budget
-  Route::get('/updatebudget','Budget@updateBudget');
+  Route::post('/updatebudget','Budget@updateBudget');
+
+  //Route for view VUEJS
+  Route::view('/', 'index');
 });
 
 

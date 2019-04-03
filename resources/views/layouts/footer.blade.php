@@ -1,6 +1,6 @@
 
     </div>
-
+    <script src="https://unpkg.com/vue-swal"></script>
     <script src="{{ asset('js/app.js')}}" defer></script>
     <script src="{{ asset('js/jquery-3.2.1.min.js')}}"></script>
     <script src="{{ asset('styles/bootstrap-4.1.2/popper.js')}}"></script>
