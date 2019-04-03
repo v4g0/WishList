@@ -1,6 +1,6 @@
 <template>
 
-  <div class="super_container" style="    overflow: visible!important;">
+  <div class="super_container" style="    overflow: auto; height: 100vh;">
     <div class="menu">
 
      <!-- Navigation -->
@@ -11,13 +11,13 @@
            <a>{{bought.name}} - ${{bought.price}}</a>
          </li>
        </ul>
+       <h3 v-if='boughtList != undefined'>Total = ${{this.boughtTotal}}</h3>
      </div>
 
     </div>
     <!-- Modal Component-->
     <modal-component></modal-component>
-    <!-- Button for add new wish-->
-    <button data-toggle="modal" data-target="#modal-add" class='add_button'>+</button>
+    <edit-modal-component></edit-modal-component>
   	<!-- Header -->
 
   	<header class="header">
@@ -47,7 +47,10 @@
   		</div>
   	</header>
     <div class="super_container_inner">
-      <div style="height: 100vh;" class="super_overlay"></div>
+      <div style="height: 100000vh; z-index:2" class="super_overlay"></div>
+      <!-- Button for add new wish-->
+      <button data-toggle="modal" data-target="#modal-add" class='add_button'>+</button>
+
       <div class="products">
   			<div class="container">
           <div class="row products_bar_row">
@@ -101,7 +104,7 @@
             wishlist:undefined,
             filter: 2,
             boughtList:undefined,
-            boughtPlus:0,
+            boughtTotal:0,
             search:null
         }
       },
@@ -134,12 +137,21 @@
             }).then(response => {
                if(response.data.success){
                  this.boughtList = response.data.data
+                 if(this.boughtList != undefined){
+                   var total = 0
+                   this.boughtList.map(e=>{
+                     total += e.price
+                   })
+                   this.boughtTotal = total
+                 }
+
                }else{
                  this.boughtList=true
                }
             })
           },
           getWishList(){
+            this.wishlist = undefined
             axios.get("/getwishlist",{
               params: {
                 type: this.filter

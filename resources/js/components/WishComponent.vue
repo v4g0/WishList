@@ -1,7 +1,11 @@
 <template>
   <div :class="'col-xl-4 col-md-6 grid-item ' + type">
     <div class="product">
-      <div style="border: solid 2px #dbdbdb; border-bottom: none;" class="product_image"><img :src="'uploads/products/thumbnail/' + wish.image" alt=""></div>
+      <div style="border: solid 2px #dbdbdb; border-bottom: none;" class="product_image">
+        <!--<img :src="'uploads/products/thumbnail/' + wish.image" alt="">-->
+        <img class="image" :src="'uploads/products/thumbnail/' + wish.image" @click="onClick(0)">
+        <vue-gallery-slideshow :images="images" :index="index" @close="index = null"></vue-gallery-slideshow>
+      </div>
       <div class="product_content">
         <div class="product_info d-flex flex-row align-items-start justify-content-start">
           <div>
@@ -21,7 +25,7 @@
             <div @click='deleteWish()' style="background:white!important" class="product_button product_fav text-center d-flex flex-column align-items-center justify-content-center">
               <div><div style="width:auto"><i style="font-size: 27px;  color: red; margin-right:25px" class="fas fa-times-circle"></i></div></div>
             </div>
-            <div style="background:white!important;border-right: solid 1px #ededed;" class="product_button product_fav text-center d-flex flex-column align-items-center justify-content-center">
+            <div  data-toggle="modal" :data-target="openModal" @click='updateWish()' :style="'background:white!important;border-right: solid 1px #ededed;' + style" class="product_button product_fav text-center d-flex flex-column align-items-center justify-content-center">
               <div><div style="width:auto"><i style="font-size: 27px;  color: darkblue;" class="fas fa-pen"></i></div></div>
             </div>
             <div v-on:click="discountWish" v-bind:style='this.style' class="product_button product_cart text-center d-flex flex-column align-items-center justify-content-center">
@@ -35,17 +39,28 @@
 </template>
 
 <script>
+    import VueGallerySlideshow from 'vue-gallery-slideshow'
     export default {
       props:['wish'],
+      components: {
+        VueGallerySlideshow
+      },
       data() {
         return {
+           images: [
+              'uploads/products/' + this.wish.image,
+            ],
+            index: null,
+            openModal : this.wish.bought != 1 ? '#modal-edit' : '',
             style: this.wish.bought === 1 ? 'background:gray' : '',
             plus: this.wish.bought === 1 ? 'display:none' : '',
             type: this.wish.bought === 1 ? 'bought' : 'wish',
-
         }
       },
       methods: {
+          updateWish(){
+              this.$eventHub.$emit('editModal',this.wish)
+          },
           deleteWish(){
             swal({
                       title: "¿Estas seguro que deseas eliminar este deseo?",
@@ -64,6 +79,9 @@
                            })
                       }
               });
+          },
+          onClick(i) {
+            this.index = i;
           },
           discountWish(){
             if(this.wish.bought === 0){

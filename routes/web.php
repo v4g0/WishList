@@ -24,6 +24,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/getboughtlist', 'WishList@getBoughtList');
   //Get wishList
   Route::get('/getwishlist', 'WishList@getWishList');
+  //Edit wish
+  Route::post('/editwish', 'WishList@updateWishList');
   //Remove product from wishlist
   Route::post('/removefwishlist', 'WishList@removeFromWishList');
   //BuyProducts

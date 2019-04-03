@@ -15,13 +15,14 @@ Vue.prototype.$eventHub = new Vue();
 //loaders
 Vue.component('pulse-loader', require('vue-spinner/src/PulseLoader.vue').default);
 Vue.component('clip-loader', require('vue-spinner/src/ClipLoader.vue').default);
-
 //Container component
 Vue.component('container-component', require('./components/ContainerComponent.vue').default);
 //Component for wishes
 Vue.component('wish-component', require('./components/WishComponent.vue').default);
 //component modal for add new products
 Vue.component('modal-component', require('./components/ModalComponent.vue').default);
+//component modal for edit wishes
+Vue.component('edit-modal-component', require('./components/EditModalComponent.vue').default);
 
 //Axios responses
 axios.interceptors.response.use(undefined, error => {
