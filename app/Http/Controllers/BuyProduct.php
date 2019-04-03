@@ -30,7 +30,7 @@ class BuyProduct extends Controller
       $user = Auth::user();
 
       //verify if the user has a suffcient budget
-      if($user->budget < $wish->price){
+      if($user->budget < $product->price){
         return response()->json(['success'=> false , 'msg' => 'budget']);
       }
 

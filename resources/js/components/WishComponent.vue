@@ -1,7 +1,7 @@
 <template>
-  <div class="col-xl-4 col-md-6 grid-item new">
+  <div :class="'col-xl-4 col-md-6 grid-item ' + type">
     <div class="product">
-      <div class="product_image"><img :src="'uploads/products/thumbnail/' + wish.image" alt=""></div>
+      <div style="border: solid 2px #dbdbdb; border-bottom: none;" class="product_image"><img :src="'uploads/products/thumbnail/' + wish.image" alt=""></div>
       <div class="product_content">
         <div class="product_info d-flex flex-row align-items-start justify-content-start">
           <div>
@@ -18,8 +18,11 @@
         </div>
         <div class="product_buttons">
           <div class="text-right d-flex flex-row align-items-start justify-content-start">
-            <div style="background:white!important" class="product_button product_fav text-center d-flex flex-column align-items-center justify-content-center">
-              <div><div><i style="font-size: 34px;  color: red;" class="fas fa-heart"></i></div></div>
+            <div @click='deleteWish()' style="background:white!important" class="product_button product_fav text-center d-flex flex-column align-items-center justify-content-center">
+              <div><div style="width:auto"><i style="font-size: 27px;  color: red; margin-right:25px" class="fas fa-times-circle"></i></div></div>
+            </div>
+            <div style="background:white!important;border-right: solid 1px #ededed;" class="product_button product_fav text-center d-flex flex-column align-items-center justify-content-center">
+              <div><div style="width:auto"><i style="font-size: 27px;  color: darkblue;" class="fas fa-pen"></i></div></div>
             </div>
             <div v-on:click="discountWish" v-bind:style='this.style' class="product_button product_cart text-center d-flex flex-column align-items-center justify-content-center">
               <div><div><img src="images/cart.svg" class="svg" alt=""><div  v-bind:style='this.plus'>+</div></div></div>
@@ -37,10 +40,31 @@
       data() {
         return {
             style: this.wish.bought === 1 ? 'background:gray' : '',
-            plus: this.wish.bought === 1 ? 'display:none' : ''
+            plus: this.wish.bought === 1 ? 'display:none' : '',
+            type: this.wish.bought === 1 ? 'bought' : 'wish',
+
         }
       },
       methods: {
+          deleteWish(){
+            swal({
+                      title: "¿Estas seguro que deseas eliminar este deseo?",
+                      icon: "warning",
+                      buttons: true,
+                      dangerMode: true,
+                      })
+                      .then((willDelete) => {
+                      if (willDelete) {
+                        axios.post('/removefwishlist', {
+                             id : this.wish.id,
+                           }).then((response) =>{
+                              if(response.data.success){
+                                this.$eventHub.$emit('updateWishList')
+                              }
+                           })
+                      }
+              });
+          },
           discountWish(){
             if(this.wish.bought === 0){
               let bodyFormData = new FormData()
@@ -49,6 +73,8 @@
               }).then(response => {
                  if(response.data.success){
                    this.$eventHub.$emit('updateWishList')
+                 }else{
+                   swal('Este producto supera el presupuesto' , 'Favor de ajustar presupuesto para poder continuar.','error')
                  }
               })
             }

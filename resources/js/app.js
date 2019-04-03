@@ -18,7 +18,10 @@ Vue.component('clip-loader', require('vue-spinner/src/ClipLoader.vue').default);
 
 //Container component
 Vue.component('container-component', require('./components/ContainerComponent.vue').default);
+//Component for wishes
 Vue.component('wish-component', require('./components/WishComponent.vue').default);
+//component modal for add new products
+Vue.component('modal-component', require('./components/ModalComponent.vue').default);
 
 //Axios responses
 axios.interceptors.response.use(undefined, error => {
@@ -28,7 +31,7 @@ axios.interceptors.response.use(undefined, error => {
 
   switch (error.response.status) {
     case 422:
-       swal("¡Oops!", "Datos incorrectos", "error")
+      swal("¡Oops!", "Datos incorrectos", "error")
       break;
     case 405:
       swal("¡Oops!", "Acceso denegado", "error")

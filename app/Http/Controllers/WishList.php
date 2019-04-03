@@ -29,14 +29,37 @@ class WishList extends Controller
       return response()->json(['success'=> true]);
     }
 
-    function getWishList(Request $r){
+    function getBoughtList(Request $r){
+      //Get products that user bought
+      $wishList = User::find($r->user()->id)
+      ->wishList()
+      ->select('name','price')
+      ->where('bought' , 1)
+      ->orderby('wishes.updated_at' , 'desc')
+      ->get();
 
-      //Find products of the wish list
+      //check if exist almost 1 product
+      if(!isset($wishList[0])){
+        return response()->json(['success'=> false]);
+      }
+
+      return response()->json(['success' => true , 'data' => $wishList]);
+    }
+
+    function searchProduct(Request $r){
+      $r->validate([
+          'search' => 'required|min:1',
+      ]);
+
       $wishList = User::find($r->user()->id)
       ->wishList()
       ->select('wishes.id','image','name','bought','description','price','products.created_at','products.updated_at')
       ->where('status_' , 1)
+      ->where('name', 'LIKE', '%'.$r->search.'%')
+      ->orWhere('status_' , 1)
+      ->where('description', 'LIKE', '%'.$r->search.'%')
       ->orderby('created_at' , 'desc')
+      ->groupby('id')
       ->get();
 
       //check if exist almost 1 product in wishlist
@@ -46,9 +69,37 @@ class WishList extends Controller
       return response()->json(['success' => true , 'data' => $wishList]);
     }
 
+    function getWishList(Request $r){
+      $r->validate([
+          'type' => 'required|numeric|between:0,2',
+      ]);
+
+      //Find products of the wish list
+      if($r->type == 2){
+        $wishList = User::find($r->user()->id)
+        ->wishList()
+        ->select('wishes.id','image','name','bought','description','price','products.created_at','products.updated_at')
+        ->where('status_' , 1)
+        ->orderby('created_at' , 'desc')
+        ->get();
+      }else{
+        $wishList = User::find($r->user()->id)
+        ->wishList()
+        ->select('wishes.id','image','name','bought','description','price','products.created_at','products.updated_at')
+        ->where(['status_' =>1 , 'bought' => $r->type])
+        ->orderby('created_at' , 'desc')
+        ->get();
+      }
+      //check if exist almost 1 product in wishlist
+      if(!isset($wishList[0])){
+        return response()->json(['success'=> false]);
+      }
+      return response()->json(['success' => true , 'data' => $wishList]);
+    }
+
     function createNewWish(Request $r){
       $r->validate([
-          'name' => 'required|unique:products|max:255',
+          'name' => 'required|max:255',
           'description' => 'required|max:255',
           'price' => 'required|numeric',
           'image' => 'image|mimes:jpeg,bmp,png,jpg',

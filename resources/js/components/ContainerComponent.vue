@@ -1,6 +1,23 @@
 <template>
-  <div class="super_container" style="    overflow: visible!important;">
 
+  <div class="super_container" style="    overflow: visible!important;">
+    <div class="menu">
+
+     <!-- Navigation -->
+     <div class="menu_nav">
+       <h3>{{this.boughtList === undefined ? 'Aun no tienes productos comprados.': 'Productos comprados'}}</h3>
+       <ul style="overflow-y: auto;  height: 200px;">
+         <li v-for="(bought, index) in boughtList" :key="index">
+           <a>{{bought.name}} - ${{bought.price}}</a>
+         </li>
+       </ul>
+     </div>
+
+    </div>
+    <!-- Modal Component-->
+    <modal-component></modal-component>
+    <!-- Button for add new wish-->
+    <button data-toggle="modal" data-target="#modal-add" class='add_button'>+</button>
   	<!-- Header -->
 
   	<header class="header">
@@ -14,6 +31,7 @@
   					</div>
   				</a>
   			</div>
+        <div class="hamburger" @click='getBoughtList()'><i class="fa fa-bars" aria-hidden="true"></i></div>
 
   			<div class="header_right d-flex flex-row align-items-center justify-content-start ml-auto">
 
@@ -29,23 +47,32 @@
   		</div>
   	</header>
     <div class="super_container_inner">
-      <div class="super_overlay"></div>
+      <div style="height: 100vh;" class="super_overlay"></div>
       <div class="products">
   			<div class="container">
           <div class="row products_bar_row">
             <div class="col">
               <div class="products_bar d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-start justify-content-center">
-                <div class="products_bar_links">
+                <div class="products_bar_links" style="padding-top: 50px; margin: auto;">
                   <ul class="d-flex flex-row align-items-start justify-content-start">
-                    <li><a href="#">All</a></li>
-                    <li><a href="#">Hot Products</a></li>
-                    <li><a href="#">Sale Products</a></li>
+                    <li><a href="#" @click='filter = 2; getWishList()'>Todos</a></li>
+                    <li><a href="#" @click='filter = 1 ; getWishList()' >Comprados</a></li>
+                    <li><a href="#" @click='filter = 0 ;getWishList()'>No comprados</a></li>
                   </ul>
                 </div>
 
               </div>
+              <!-- Search -->
+              <div class="menu_search">
+            		<form action='#' class="menu_search_form">
+            			<input v-model='search' type="text" class="search_input" placeholder="Busca algun" required="required">
+            			<button @click.default='searchWishes()' class="menu_search_button"><img src="images/search.png" alt=""></button>
+            		</form>
+            	</div>
             </div>
+
           </div>
+
           <div class="row products_row products_container grid">
             <!-- Product -->
   				  <wish-component v-for="wish in wishlist" :key="wish.id" :wish="wish"></wish-component>
@@ -55,6 +82,8 @@
               :color="'black'"
               :size="'30px'"
             ></clip-loader>
+            <h2 style="margin:10px;text-align:center" v-if="wishlist === true">{{filter === 2 ? 'Aun no tienes deseos, agrega algunos.':'No existen deseos en esta categoría.'}}</h2>
+            <h2 style="margin:10px;text-align:center" v-if="wishlist === false">No se encontraron resultados.</h2>
           </div>
         </div>
       </div>
@@ -69,8 +98,12 @@
       data() {
         return {
             budget: 0,
-            wishlist:undefined
-        };
+            wishlist:undefined,
+            filter: 2,
+            boughtList:undefined,
+            boughtPlus:0,
+            search:null
+        }
       },
       created() {
          this.getBudget()
@@ -82,11 +115,40 @@
          })
       },
       methods: {
+          searchWishes(e){
+            if(this.search != null){
+              this.wishlist = undefined
+              axios.post("/search",{
+                search: this.search
+              }).then(response => {
+                 if(response.data.success){
+                   this.wishlist = response.data.data
+                 }else{
+                   this.wishlist=false
+                 }
+              })
+            }
+          },
+          getBoughtList(){
+            axios.get("/getboughtlist",{
+            }).then(response => {
+               if(response.data.success){
+                 this.boughtList = response.data.data
+               }else{
+                 this.boughtList=true
+               }
+            })
+          },
           getWishList(){
             axios.get("/getwishlist",{
+              params: {
+                type: this.filter
+              }
             }).then(response => {
                if(response.data.success){
                  this.wishlist = response.data.data
+               }else{
+                 this.wishlist=true
                }
             })
           },

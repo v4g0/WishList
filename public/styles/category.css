@@ -970,6 +970,23 @@ section
 {
 	border: solid 2px #dbdbdb;
 }
+.add_button{
+	opacity: 0.9;
+	font-size: 75px;
+	background: forestgreen;
+	border-radius: 100%;
+	width: 70px;
+	line-height: 73px;
+	border: none;
+	height: 70px;
+	color: white;
+	font-weight: bold;
+	position: fixed;
+	bottom: 12px;
+	z-index: 1;
+	right: 30px;
+	cursor: pointer;
+}
 .home_item_large .product_content
 {
 	background: rgba(255,255,255,0.2);
