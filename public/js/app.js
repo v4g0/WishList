@@ -1822,38 +1822,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       budget: 0,
-      wishlist: []
+      wishlist: undefined
     };
   },
   created: function created() {
+    var _this = this;
+
     this.getBudget();
     this.getWishList();
+    this.$eventHub.$on('updateWishList', function () {
+      _this.wishlist = undefined;
+
+      _this.getWishList();
+
+      _this.getBudget();
+    });
   },
   methods: {
     getWishList: function getWishList() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get("/getwishlist", {}).then(function (response) {
         if (response.data.success) {
-          _this.wishlist = response.data.data;
+          _this2.wishlist = response.data.data;
         }
       });
     },
     getBudget: function getBudget() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("/getbudget", {}).then(function (response) {
         if (response.data.success) {
-          _this2.budget = response.data.budget;
+          _this3.budget = response.data.budget;
         }
       });
     },
     updateBudget: function updateBudget() {
-      var _this3 = this;
+      var _this4 = this;
 
       swal({
         text: 'Agrega un nuevo presupuesto.',
@@ -1868,7 +1884,7 @@ __webpack_require__.r(__webpack_exports__);
           bodyFormData.append('budget', value);
           axios.post("/updatebudget", bodyFormData, {}).then(function (response) {
             if (response.data.success) {
-              _this3.getBudget();
+              _this4.getBudget();
 
               swal('Tu presupuesto fue actualizado', '', 'success');
             }
@@ -1930,7 +1946,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['wish']
+  props: ['wish'],
+  data: function data() {
+    return {
+      style: this.wish.bought === 1 ? 'background:gray' : '',
+      plus: this.wish.bought === 1 ? 'display:none' : ''
+    };
+  },
+  methods: {
+    discountWish: function discountWish() {
+      var _this = this;
+
+      if (this.wish.bought === 0) {
+        var bodyFormData = new FormData();
+        bodyFormData.append('id', this.wish.id);
+        axios.post("/buyproduct", bodyFormData, {}).then(function (response) {
+          if (response.data.success) {
+            _this.$eventHub.$emit('updateWishList');
+          }
+        });
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -37950,13 +37987,24 @@ var render = function() {
             _c(
               "div",
               { staticClass: "row products_row products_container grid" },
-              _vm._l(_vm.wishlist, function(wish) {
-                return _c("wish-component", {
-                  key: wish.id,
-                  attrs: { wish: wish }
+              [
+                _vm._l(_vm.wishlist, function(wish) {
+                  return _c("wish-component", {
+                    key: wish.id,
+                    attrs: { wish: wish }
+                  })
+                }),
+                _vm._v(" "),
+                _c("clip-loader", {
+                  staticClass: "w-100 my-4",
+                  attrs: {
+                    loading: _vm.wishlist == undefined,
+                    color: "black",
+                    size: "30px"
+                  }
                 })
-              }),
-              1
+              ],
+              2
             )
           ])
         ])
@@ -38125,7 +38173,39 @@ var render = function() {
           ]
         ),
         _vm._v(" "),
-        _vm._m(0)
+        _c("div", { staticClass: "product_buttons" }, [
+          _c(
+            "div",
+            {
+              staticClass:
+                "text-right d-flex flex-row align-items-start justify-content-start"
+            },
+            [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "product_button product_cart text-center d-flex flex-column align-items-center justify-content-center",
+                  style: this.style,
+                  on: { click: _vm.discountWish }
+                },
+                [
+                  _c("div", [
+                    _c("div", [
+                      _c("img", {
+                        staticClass: "svg",
+                        attrs: { src: "images/cart.svg", alt: "" }
+                      }),
+                      _c("div", { style: this.plus }, [_vm._v("+")])
+                    ])
+                  ])
+                ]
+              )
+            ]
+          )
+        ])
       ])
     ])
   ])
@@ -38135,54 +38215,24 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "product_buttons" }, [
-      _c(
-        "div",
-        {
-          staticClass:
-            "text-right d-flex flex-row align-items-start justify-content-start"
-        },
-        [
-          _c(
-            "div",
-            {
-              staticClass:
-                "product_button product_fav text-center d-flex flex-column align-items-center justify-content-center",
-              staticStyle: { background: "white!important" }
-            },
-            [
-              _c("div", [
-                _c("div", [
-                  _c("i", {
-                    staticClass: "fas fa-heart",
-                    staticStyle: { "font-size": "34px", color: "red" }
-                  })
-                ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "product_button product_cart text-center d-flex flex-column align-items-center justify-content-center"
-            },
-            [
-              _c("div", [
-                _c("div", [
-                  _c("img", {
-                    staticClass: "svg",
-                    attrs: { src: "images/cart.svg", alt: "" }
-                  }),
-                  _c("div", [_vm._v("+")])
-                ])
-              ])
-            ]
-          )
-        ]
-      )
-    ])
+    return _c(
+      "div",
+      {
+        staticClass:
+          "product_button product_fav text-center d-flex flex-column align-items-center justify-content-center",
+        staticStyle: { background: "white!important" }
+      },
+      [
+        _c("div", [
+          _c("div", [
+            _c("i", {
+              staticClass: "fas fa-heart",
+              staticStyle: { "font-size": "34px", color: "red" }
+            })
+          ])
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -50522,8 +50572,8 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.prototype.$eventHub = new Vue(); //loaders
 
-Vue.component('pulse-loader', __webpack_require__(/*! vue-spinner/src/PulseLoader.vue */ "./node_modules/vue-spinner/src/PulseLoader.vue"));
-Vue.component('clip-loader', __webpack_require__(/*! vue-spinner/src/ClipLoader.vue */ "./node_modules/vue-spinner/src/ClipLoader.vue")); //Container component
+Vue.component('pulse-loader', __webpack_require__(/*! vue-spinner/src/PulseLoader.vue */ "./node_modules/vue-spinner/src/PulseLoader.vue").default);
+Vue.component('clip-loader', __webpack_require__(/*! vue-spinner/src/ClipLoader.vue */ "./node_modules/vue-spinner/src/ClipLoader.vue").default); //Container component
 
 Vue.component('container-component', __webpack_require__(/*! ./components/ContainerComponent.vue */ "./resources/js/components/ContainerComponent.vue").default);
 Vue.component('wish-component', __webpack_require__(/*! ./components/WishComponent.vue */ "./resources/js/components/WishComponent.vue").default); //Axios responses

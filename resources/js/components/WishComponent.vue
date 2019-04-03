@@ -21,8 +21,8 @@
             <div style="background:white!important" class="product_button product_fav text-center d-flex flex-column align-items-center justify-content-center">
               <div><div><i style="font-size: 34px;  color: red;" class="fas fa-heart"></i></div></div>
             </div>
-            <div class="product_button product_cart text-center d-flex flex-column align-items-center justify-content-center">
-              <div><div><img src="images/cart.svg" class="svg" alt=""><div>+</div></div></div>
+            <div v-on:click="discountWish" v-bind:style='this.style' class="product_button product_cart text-center d-flex flex-column align-items-center justify-content-center">
+              <div><div><img src="images/cart.svg" class="svg" alt=""><div  v-bind:style='this.plus'>+</div></div></div>
             </div>
           </div>
         </div>
@@ -34,6 +34,26 @@
 <script>
     export default {
       props:['wish'],
+      data() {
+        return {
+            style: this.wish.bought === 1 ? 'background:gray' : '',
+            plus: this.wish.bought === 1 ? 'display:none' : ''
+        }
+      },
+      methods: {
+          discountWish(){
+            if(this.wish.bought === 0){
+              let bodyFormData = new FormData()
+              bodyFormData.append('id', this.wish.id)
+              axios.post("/buyproduct",bodyFormData,{
+              }).then(response => {
+                 if(response.data.success){
+                   this.$eventHub.$emit('updateWishList')
+                 }
+              })
+            }
+          },
+      }
 
     }
 </script>

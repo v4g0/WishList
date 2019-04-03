@@ -34,7 +34,7 @@ class WishList extends Controller
       //Find products of the wish list
       $wishList = User::find($r->user()->id)
       ->wishList()
-      ->select('wishes.id','image','name','description','price','wishes.created_at','wishes.updated_at')
+      ->select('wishes.id','image','name','bought','description','price','products.created_at','products.updated_at')
       ->where('status_' , 1)
       ->orderby('created_at' , 'desc')
       ->get();

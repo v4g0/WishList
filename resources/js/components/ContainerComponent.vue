@@ -49,10 +49,17 @@
           <div class="row products_row products_container grid">
             <!-- Product -->
   				  <wish-component v-for="wish in wishlist" :key="wish.id" :wish="wish"></wish-component>
+            <clip-loader
+              class="w-100 my-4"
+              :loading="wishlist == undefined"
+              :color="'black'"
+              :size="'30px'"
+            ></clip-loader>
           </div>
         </div>
       </div>
    </div>
+
   </div>
 
 </template>
@@ -62,12 +69,17 @@
       data() {
         return {
             budget: 0,
-            wishlist:[]
+            wishlist:undefined
         };
       },
       created() {
          this.getBudget()
          this.getWishList()
+         this.$eventHub.$on('updateWishList', () => {
+             this.wishlist = undefined
+             this.getWishList()
+             this.getBudget()
+         })
       },
       methods: {
           getWishList(){

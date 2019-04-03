@@ -13,8 +13,8 @@ window.Vue = require('vue');
 Vue.prototype.$eventHub = new Vue();
 
 //loaders
-Vue.component('pulse-loader', require('vue-spinner/src/PulseLoader.vue'));
-Vue.component('clip-loader', require('vue-spinner/src/ClipLoader.vue'));
+Vue.component('pulse-loader', require('vue-spinner/src/PulseLoader.vue').default);
+Vue.component('clip-loader', require('vue-spinner/src/ClipLoader.vue').default);
 
 //Container component
 Vue.component('container-component', require('./components/ContainerComponent.vue').default);
