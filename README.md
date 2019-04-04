@@ -29,13 +29,13 @@ La aplicación fue creada bajo la metodología mobile first y los requerimientos
 -El usuario puede consultar cuanto ha gastado y cual es su presupuesto actual
 -El usuario puede buscar en su lista un deseo en particular por su nombre o descripción.
 
-## Extras :
+## Extras 
 
 -Para que sea visible el envió de correos la aplicación cuenta con un login y un registro.
 -Al comprar un articulo se efectúa una transacción para así asegurar que se reste del presupuesto correctamente y el deseo cambie de estatus.
 -Cuando se crea un deseo se crea un thumbnail para visualizar en el listado y una imagen para ver en grande con sus medidas proporcionales para evitar imagenes pesadas.
 
-## Algunas Herramientas para el desarrollo :
+## Algunas Herramientas para el desarrollo 
 
 -Laravel
 -Vuejs
@@ -47,13 +47,13 @@ La aplicación fue creada bajo la metodología mobile first y los requerimientos
 -Html5
 -Eloquent
 
-## Notas :
+## Notas 
 
 -El usuario comienza sin deseos y se tienen que agregar algunos para así poder visualizarlos.
 -Laravel no fue utilizado como un api puesto que vuejs ya viene integrado y mejorar el desempeño de la aplicación.
 *En el desarrollo de REST API ya tengo experiencia puesto que en la aplicación que estaba trabajando funcionaba a través de un api que funcionaba con passport para comunicarse con el frontend desarrollado en REACT, el cual desarrolle en su totalidad.
 
-## Demo:
+## Demo
 
 La aplicación esta adaptada a los dispositivos móviles bajo la metodología mobile first, para una mejor experiencia :
 
