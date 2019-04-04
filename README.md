@@ -90,3 +90,8 @@ http://www.responsinator.com/?url=wishlist.wmyweb.site%2F%23
 
 -Dispositivo móvil : 
 http://wishlist.wmyweb.site
+
+## Instrucciones de instalación 
+
+-Primero que nada configurar .env , crear una base de datos y poner los datos de conexión. También agregar una cuenta de correo electrónico y sus respectivas credenciales. 
+-Para comenzar a utilizar solo es necesario hacer las respectivas migraciones con el comando 'php artisan migrate'.
