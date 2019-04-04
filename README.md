@@ -81,7 +81,7 @@ La aplicación fue creada bajo la metodología mobile first y los requerimientos
 
 *En el desarrollo de REST API ya tengo experiencia puesto que en la aplicación que estaba trabajando funcionaba a través de un api que funcionaba con passport para comunicarse con el frontend desarrollado en REACT, el cual desarrolle en su totalidad.
 
--Para controlar el estado general de la aplicación utilice un hub en lugar de REDUX.
+-Para controlar el estado general de la aplicación utilice un hub de vuejs en lugar de REDUX.
 
 ## Demo
 
