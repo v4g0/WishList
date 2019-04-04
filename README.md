@@ -7,65 +7,94 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-## About Laravel
+## Wish List By David Brihuega
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Aplicación web que consiste en una lista de deseos para que el usuario agregue, elimine, compre o edite sus deseos que vienen mostrados en una lista la cual se enfoca en la usabilidad , la experiencia del usuario y performance.
+La aplicación fue creada bajo la metodología mobile first y los requerimientos de los usuarios son: 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-Los deseos constan de un nombre, descripción, una fecha de modificación/creación y una fotografía.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-El usuario tiene un límite máximo como presupuesto para comprar los artículos de su lista de deseos.
 
-## Learning Laravel
+-El usuario puede crear los deseos que necesite los cuales puede visualizar en una lista.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-El usuario puede marcar como comprado un deseo.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost you and your team's skills by digging into our comprehensive video library.
+-El usuario puede ver en una lista los deseos que ya ha comprado y otra lista de los que le faltan por comprar.
 
-## Laravel Sponsors
+-El usuario puede ver un distintivo de los artículos ya comprados y no podrá volver a comprarlos.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+-El usuario puede modificar los deseos que aun no ha comprado.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
+-El usuario puede eliminar cualquier deseo ya sea comprado o no.
 
-## Contributing
+-El usuario recibe un correo electrónico cada que se cree un nuevo deseo o sea comprado.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-El usuario puede ver en grande la imagen del deseo.
 
-## Security Vulnerabilities
+-El usuario puede ver hace cuanto tiempo fue publicado o actualizado el deseo.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+-El usuario no puede superar el límite de su presupuesto establecido.
 
-## License
+-Si el usuario desea comprar más artículos puede incrementar su presupuesto.
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-El usuario cuando compra un artículo su presupuesto irá bajando con cada compra.
+
+-El usuario puede consultar cuanto ha gastado y cual es su presupuesto actual.
+
+-El usuario puede buscar en su lista un deseo en particular por su nombre o descripción.
+
+
+## Extras 
+
+-Para que sea visible el envió de correos la aplicación cuenta con un login y un registro.
+
+-Al comprar un articulo se efectúa una transacción para así asegurar que se reste del presupuesto correctamente y el deseo cambie de estatus.
+
+-Cuando se crea un deseo se crea un thumbnail para visualizar en el listado y una imagen para ver en grande con sus medidas proporcionales para evitar imagenes pesadas.
+
+## Algunas Herramientas para el desarrollo 
+
+-Laravel
+
+-Vuejs
+
+-Css
+
+-Mysql 
+
+-Js
+
+-Jquery
+
+-Bootstrap
+
+-Html5
+
+-Eloquent
+
+## Notas 
+
+-El usuario comienza sin deseos y se tienen que agregar algunos para así poder visualizarlos.
+
+-Laravel no fue utilizado como un api puesto que vuejs ya viene integrado y mejorar el desempeño de la aplicación.
+
+*En el desarrollo de REST API ya tengo experiencia puesto que en la aplicación que estaba trabajando funcionaba a través de un api que funcionaba con passport para comunicarse con el frontend desarrollado en REACT, el cual desarrolle en su totalidad.
+
+-Para controlar el estado general de la aplicación utilice un hub de vuejs en lugar de REDUX.
+
+## Demo
+
+La aplicación esta adaptada a los dispositivos móviles bajo la metodología mobile first, para una mejor experiencia :
+
+-En PC entrar a : 
+http://www.responsinator.com/?url=wishlist.wmyweb.site%2F%23
+
+-Dispositivo móvil : 
+http://wishlist.wmyweb.site
+
+## Instrucciones de instalación 
+
+-Primero que nada configurar .env , crear una base de datos y poner los datos de conexión. También agregar una cuenta de correo electrónico y sus respectivas credenciales. 
+
+-Para comenzar a utilizar solo es necesario hacer las respectivas migraciones con el comando 'php artisan migrate'.
