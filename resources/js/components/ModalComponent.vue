@@ -95,6 +95,11 @@ export default {
         axios.post("/createnewproduct", bodyFormData,{  headers: { 'content-type': 'multipart/form-data' }})
         .then(r => {
           if(r.data.success) {
+            this.name= ''
+            this.description= ''
+            this.price= ''
+            this.image=null
+            this.checkmodal= ''
             swal("Hecho","¡Deseo Agregado!","success")
             this.$eventHub.$emit('updateWishList')
           }
