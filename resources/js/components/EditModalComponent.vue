@@ -96,6 +96,12 @@ export default {
         if(this.image){
           bodyFormData.append('image', this.image);
         }
+        swal({
+             closeOnClickOutside: false,
+             buttons: false,
+             icon: "info",
+             text: "Procesando..",
+            });
 
         axios.post("/editwish", bodyFormData,{  headers: { 'content-type': 'multipart/form-data' }})
         .then(r => {

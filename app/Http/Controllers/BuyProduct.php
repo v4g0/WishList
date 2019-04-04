@@ -58,7 +58,7 @@ class BuyProduct extends Controller
 
      Mail::send('email.default', $data_mail, function($message) use($email) {
         $message->to($email)->subject
-           ('Nuevo deseo añadido.');
+           ('Deseo comprado.');
         $message->from('wishlist.demobybrihuega@gmail.com','Wish List By David Brihuega');
      });
 

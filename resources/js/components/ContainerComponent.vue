@@ -1,10 +1,12 @@
 <template>
 
   <div class="super_container" style="    overflow: auto; height: 100vh;">
-    <div class="menu">
-
+    <div class="menu"
+    v-bind:class="{ active: isActive }"
+    >
+     <span @click='closeMenu()' style=" position: absolute;top: 13px;right: 22px;color:black; font-weight:bold; font-size:20px">X</span>
      <!-- Navigation -->
-     <div class="menu_nav">
+     <div class="menu_nav" >
        <h3>{{this.boughtList === undefined ? 'Aun no tienes productos comprados.': 'Productos comprados'}}</h3>
        <ul style="overflow-y: auto;  height: 200px;">
          <li v-for="(bought, index) in boughtList" :key="index">
@@ -22,7 +24,9 @@
     <edit-modal-component></edit-modal-component>
   	<!-- Header -->
 
-  	<header class="header">
+  	<header class="header"
+    v-bind:class="{ active: isActive }"
+    >
   		<div class="header_overlay"></div>
   		<div class="header_content d-flex flex-row align-items-center justify-content-start">
   			<div class="logo">
@@ -33,7 +37,7 @@
   					</div>
   				</a>
   			</div>
-        <div class="hamburger" @click='getBoughtList()'><i class="fa fa-bars" aria-hidden="true"></i></div>
+        <div style="font-size: 20px; margin-left: 15px; display:inline-block; color: #2e2e2e;" @click.default='getBoughtList()'><i class="fa fa-bars" aria-hidden="true"></i></div>
 
   			<div class="header_right d-flex flex-row align-items-center justify-content-start ml-auto">
 
@@ -48,8 +52,10 @@
   			</div>
   		</div>
   	</header>
-    <div class="super_container_inner">
-      <div style="height: 100000vh; z-index:2" class="super_overlay"></div>
+    <div class="super_container_inner"
+      v-bind:class="{ active: isActive }"
+    >
+      <div style="height: 100000vh; z-index:2" @click='closeMenu()' class="super_overlay"></div>
       <!-- Button for add new wish-->
       <button data-toggle="modal" data-target="#modal-add" class='add_button'>+</button>
 
@@ -69,9 +75,9 @@
               </div>
               <!-- Search -->
               <div class="menu_search">
-            		<form action='#' class="menu_search_form">
-            			<input v-model='search' type="text" class="search_input" placeholder="Busca algun" required="required">
-            			<button @click.default='searchWishes()' class="menu_search_button"><img src="images/search.png" alt=""></button>
+            		<form  class="menu_search_form">
+            			<input v-model='search' type="text" class="search_input" placeholder="Busca algun deseo" required="required">
+            			<a @click.default='searchWishes()' style="text-align: center;" class="menu_search_button"><img style="margin-top: 8px;" src="images/search.png" alt=""></a>
             		</form>
             	</div>
             </div>
@@ -107,7 +113,8 @@
             filter: 2,
             boughtList:undefined,
             boughtTotal:0,
-            search:null
+            search:null,
+            isActive:false
         }
       },
       created() {
@@ -115,11 +122,15 @@
          this.getWishList()
          this.$eventHub.$on('updateWishList', () => {
              this.wishlist = undefined
+             this.filter = 2
              this.getWishList()
              this.getBudget()
          })
       },
       methods: {
+          closeMenu(){
+            this.isActive = false
+          },
           logout(){
             axios.post("/logout",{
             }).then(response => {
@@ -141,6 +152,7 @@
             }
           },
           getBoughtList(){
+            this.isActive = true
             axios.get("/getboughtlist",{
             }).then(response => {
                if(response.data.success){

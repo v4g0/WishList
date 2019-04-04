@@ -1,5 +1,6 @@
 
     </div>
+
     <script src="https://unpkg.com/vue-swal"></script>
     <script src="{{ asset('js/app.js')}}" defer></script>
     <script src="{{ asset('js/jquery-3.2.1.min.js')}}"></script>
@@ -17,5 +18,6 @@
     <script src="{{ asset('plugins/Isotope/isotope.pkgd.min.js')}}"></script>
     <script src="{{ asset('plugins/Isotope/fitcolumns.js')}}"></script>
     <script src="{{ asset('js/category.js')}}"></script>
+
   </body>
 </html>
