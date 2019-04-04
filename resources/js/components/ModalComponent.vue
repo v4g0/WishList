@@ -56,7 +56,7 @@ export default {
     return {
         name: '',
         description: '',
-        price: '',
+        price: 0,
         image:null,
         checkmodal: ''
     }
@@ -72,6 +72,11 @@ export default {
             !this.image)
         {
           swal("Oops","Todos los campos son necesarios","error")
+          return
+        }
+
+        if( this.price < 0 ){
+          swal("Oops","El precio debe ser mayor a 0.","error")
           return
         }
 
@@ -97,7 +102,7 @@ export default {
           if(r.data.success) {
             this.name= ''
             this.description= ''
-            this.price= ''
+            this.price= 0
             this.image=null
             this.checkmodal= ''
             swal("Hecho","¡Deseo Agregado!","success")
